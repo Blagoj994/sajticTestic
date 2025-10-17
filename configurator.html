@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfigurator Sistema - SmartControl</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/configurator.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <span>Smart</span>Control
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Početna</a>
+                <a href="index.html#services">Usluge</a>
+                <a href="index.html#about">O nama</a>
+                <a href="index.html#products">Proizvodi</a>
+                <a href="configurator.html" class="active">Konfigurator</a>
+                <a href="index.html#contact">Kontakt</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="configurator-page">
+        <section class="config-header">
+            <h1>Konfigurator Sistema</h1>
+            <p>Izaberite komponente za vaš idealni pametni dom ili sistem kontrole pristupa</p>
+        </section>
+
+        <div class="configurator-container">
+            <div class="config-options">
+                <div class="system-type">
+                    <h2>Izaberite Tip Sistema</h2>
+                    <div class="system-buttons">
+                        <button class="system-btn active" data-system="smart-home">Smart Home</button>
+                        <button class="system-btn" data-system="access-control">Kontrola Pristupa</button>
+                    </div>
+                </div>
+
+                <div class="components-section" id="smartHomeComponents">
+                    <h3>Komponente Sistema</h3>
+                    <div class="component-list">
+                        <!-- Smart Home Components -->
+                        <div class="component-item" data-category="smart-home">
+                            <div class="component-info">
+                                <img src="images/smart-light.jpg" alt="Pametno osvetljenje">
+                                <h4>Pametno Osvetljenje</h4>
+                                <p>Philips Hue komplet sa 3 sijalice</p>
+                                <span class="price">€129.99</span>
+                            </div>
+                            <div class="component-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" value="0" min="0" max="10">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+
+                        <div class="component-item" data-category="smart-home">
+                            <div class="component-info">
+                                <img src="images/thermostat.jpg" alt="Pametni termostat">
+                                <h4>Pametni Termostat</h4>
+                                <p>Nest Learning Thermostat</p>
+                                <span class="price">€249.99</span>
+                            </div>
+                            <div class="component-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" value="0" min="0" max="5">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+
+                        <div class="component-item" data-category="smart-home">
+                            <div class="component-info">
+                                <img src="images/camera.jpg" alt="Sigurnosna kamera">
+                                <h4>Sigurnosna Kamera</h4>
+                                <p>1080p HD Wi-Fi kamera sa noćnim vidom</p>
+                                <span class="price">€179.99</span>
+                            </div>
+                            <div class="component-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" value="0" min="0" max="8">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Access Control Components -->
+                        <div class="component-item" data-category="access-control" style="display: none;">
+                            <div class="component-info">
+                                <img src="images/fingerprint.jpg" alt="Biometrijska brava">
+                                <h4>Biometrijska Brava</h4>
+                                <p>Otisak prsta + PIN + Kartica</p>
+                                <span class="price">€299.99</span>
+                            </div>
+                            <div class="component-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" value="0" min="0" max="5">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+
+                        <div class="component-item" data-category="access-control" style="display: none;">
+                            <div class="component-info">
+                                <img src="images/card-reader.jpg" alt="Čitač kartica">
+                                <h4>RFID Čitač</h4>
+                                <p>Profesionalni čitač kartica</p>
+                                <span class="price">€149.99</span>
+                            </div>
+                            <div class="component-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" value="0" min="0" max="10">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+
+                        <div class="component-item" data-category="access-control" style="display: none;">
+                            <div class="component-info">
+                                <img src="images/controller.jpg" alt="Kontroler pristupa">
+                                <h4>Kontroler Pristupa</h4>
+                                <p>Centralni kontroler za 4 vrata</p>
+                                <span class="price">€399.99</span>
+                            </div>
+                            <div class="component-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" value="0" min="0" max="3">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-summary">
+                <div class="summary-card">
+                    <h3>Vaša Konfiguracija</h3>
+                    <div class="selected-items">
+                        <!-- Items will be added here dynamically -->
+                    </div>
+                    <div class="summary-totals">
+                        <div class="subtotal">
+                            <span>Međuzbir:</span>
+                            <span class="amount">€0.00</span>
+                        </div>
+                        <div class="installation">
+                            <span>Instalacija:</span>
+                            <span class="amount">€0.00</span>
+                        </div>
+                        <div class="total">
+                            <span>Ukupno:</span>
+                            <span class="amount">€0.00</span>
+                        </div>
+                    </div>
+                    <button class="request-quote-btn">Zatražite Ponudu</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>SmartControl</h4>
+                <p>Vaš partner za pametna rešenja</p>
+            </div>
+            <div class="footer-section">
+                <h4>Pratite nas</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartControl. Sva prava zadržana.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/configurator.js"></script>
+</body>
+</html>

@@ -5,6 +5,36 @@ AOS.init({
     offset: 100
 });
 
+// Create animated circuit dots
+function createCircuitDots() {
+    const hero = document.querySelector('.hero');
+    const dotsContainer = document.createElement('div');
+    dotsContainer.className = 'circuit-dots';
+    
+    // Create 30 dots with random positions
+    for (let i = 0; i < 30; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'circuit-dot';
+        
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        dot.style.left = `${x}%`;
+        dot.style.top = `${y}%`;
+        
+        // Random animation delay
+        dot.style.animationDelay = `${Math.random() * 2}s`;
+        
+        dotsContainer.appendChild(dot);
+    }
+    
+    hero.appendChild(dotsContainer);
+}
+
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', createCircuitDots);
+
 // Navigation menu toggle
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
@@ -34,11 +64,55 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Form submission
-const contactForm = document.querySelector('.contact-form');
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    // Add form submission logic here
-    alert('Hvala na poruci! Kontaktiraćemo vas uskoro.');
-    contactForm.reset();
-});
+// Initialize EmailJS
+(function() {
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+})();
+
+// Form submission handler
+async function handleSubmit(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('contactForm');
+    const submitButton = form.querySelector('.submit-button');
+    const formMessage = document.querySelector('.form-message') || document.createElement('div');
+    formMessage.className = 'form-message';
+    form.parentNode.appendChild(formMessage);
+
+    // Show loading state
+    submitButton.classList.add('loading');
+    form.classList.remove('success', 'error');
+
+    try {
+        const templateParams = {
+            to_email: 'blagoje994@gmail.com',
+            from_name: document.getElementById('name').value,
+            from_email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            message: document.getElementById('message').value
+        };
+
+        await emailjs.send(
+            'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+            'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+            templateParams
+        );
+
+        // Success state
+        form.reset();
+        form.classList.add('success');
+        formMessage.textContent = 'Hvala na poruci! Kontaktiraćemo vas uskoro.';
+        formMessage.className = 'form-message success';
+    } catch (error) {
+        // Error state
+        console.error('Error:', error);
+        form.classList.add('error');
+        formMessage.textContent = 'Došlo je do greške. Molimo pokušajte ponovo.';
+        formMessage.className = 'form-message error';
+    } finally {
+        // Remove loading state
+        submitButton.classList.remove('loading');
+    }
+
+    return false;
+}

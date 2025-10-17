@@ -19,6 +19,7 @@
                 <a href="#services">Usluge</a>
                 <a href="#about">O nama</a>
                 <a href="#products">Proizvodi</a>
+                <a href="configurator.html">Konfigurator</a>
                 <a href="#contact">Kontakt</a>
             </div>
             <div class="hamburger">
@@ -100,12 +101,15 @@
     <section id="contact" class="contact">
         <h2 data-aos="fade-up">Kontaktirajte Nas</h2>
         <div class="contact-container">
-            <form class="contact-form" data-aos="fade-right">
-                <input type="text" placeholder="Vaše ime" required>
-                <input type="email" placeholder="Vaš email" required>
-                <input type="tel" placeholder="Vaš telefon" required>
-                <textarea placeholder="Vaša poruka" required></textarea>
-                <button type="submit" class="submit-button">Pošaljite</button>
+            <form class="contact-form" data-aos="fade-right" id="contactForm" onsubmit="return handleSubmit(event)">
+                <input type="text" name="name" id="name" placeholder="Vaše ime" required>
+                <input type="email" name="email" id="email" placeholder="Vaš email" required>
+                <input type="tel" name="phone" id="phone" placeholder="Vaš telefon" required>
+                <textarea name="message" id="message" placeholder="Vaša poruka" required></textarea>
+                <button type="submit" class="submit-button">
+                    <span class="button-text">Pošaljite</span>
+                    <span class="button-loader"></span>
+                </button>
             </form>
             <div class="contact-info" data-aos="fade-left">
                 <div class="info-item">
@@ -145,6 +149,7 @@
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
