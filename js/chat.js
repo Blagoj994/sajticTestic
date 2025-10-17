@@ -47,8 +47,11 @@ function getBotAnswer(question) {
     if (window.configuratorArticles) {
         const found = window.configuratorArticles.filter(a => a.keywords.some(k => q.includes(k)));
         if (found.length > 0) {
-            let artikliTxt = found.map(a => `• <strong>${a.name}</strong> – ${a.description} (<span style='color:#00BFA5;'>€${a.price.toFixed(2)}</span>) <a href='${a.link}' target='_blank' style='color:#4A90E2;text-decoration:underline;'>Konfiguriši</a>`).join('<br>');
-            return `Preporučujem sledeće artikle iz naše ponude:<br>${artikliTxt}<br><br>Za više opcija pogledajte <a href='configurator.html' target='_blank' style='color:#4A90E2;text-decoration:underline;'>konfigurator</a>.`;
+            // create preselect link with slug:1 pairs for suggested items
+            const preselectPairs = found.map(a => `${a.slug}:1`).join(',');
+            const configuratorUrl = `configurator.html?preselect=${encodeURIComponent(preselectPairs)}`;
+            let artikliTxt = found.map(a => `• <strong>${a.name}</strong> – ${a.description} (<span style='color:#00BFA5;'>€${a.price.toFixed(2)}</span>) <a href='${configuratorUrl}' target='_blank' style='color:#4A90E2;text-decoration:underline;'>Konfiguriši</a>`).join('<br>');
+            return `Preporučujem sledeće artikle iz naše ponude:<br>${artikliTxt}<br><br>Otvorite <a href='${configuratorUrl}' target='_blank' style='color:#4A90E2;text-decoration:underline;'>konfigurator</a> da vidite predložene stavke predefinisane u ponudi.`;
         }
     }
     // Ako nema artikla, koristi standardne odgovore

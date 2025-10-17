@@ -186,4 +186,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial summary update
     updateSummary();
+
+    // Parse preselect query param to prefill quantities
+    function applyPreselectFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const pre = params.get('preselect');
+        if (!pre) return;
+        // format: slug:qty,slug2:qty2
+        const pairs = pre.split(',');
+        pairs.forEach(p => {
+            const [slug, qtyStr] = p.split(':');
+            const qty = parseInt(qtyStr) || 0;
+            if (!slug || qty <= 0) return;
+            // find matching element by data-slug
+            const el = document.querySelector(`.component-item[data-slug="${slug}"]`);
+            if (el) {
+                const input = el.querySelector('input');
+                const max = parseInt(input.max) || 999;
+                input.value = Math.min(qty, max);
+                input.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+
+    // apply preselect on load
+    applyPreselectFromUrl();
 });
