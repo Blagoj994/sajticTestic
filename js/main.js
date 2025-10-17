@@ -1,9 +1,23 @@
-// Initialize AOS (Animate on Scroll)
-AOS.init({
-    duration: 1000,
-    once: true,
-    offset: 100
-});
+// Initialize AOS (Animate on Scroll) safely - load if not present
+function initAOS() {
+    if (window.AOS && typeof AOS.init === 'function') {
+        AOS.init({ duration: 1000, once: true, offset: 100 });
+    } else {
+        // try to load AOS dynamically
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/aos@2.3.1/dist/aos.js';
+        script.onload = () => {
+            if (window.AOS && typeof AOS.init === 'function') {
+                AOS.init({ duration: 1000, once: true, offset: 100 });
+            }
+        };
+        script.onerror = () => console.warn('AOS failed to load');
+        document.head.appendChild(script);
+    }
+}
+
+// Call on DOMContentLoaded to ensure DOM exists
+document.addEventListener('DOMContentLoaded', initAOS);
 
 // Create animated circuit dots
 function createCircuitDots() {
@@ -36,25 +50,28 @@ function createCircuitDots() {
 document.addEventListener('DOMContentLoaded', createCircuitDots);
 
 // Navigation menu toggle
+// Navigation menu toggle (guard for missing elements)
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
-
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navLinks.classList.toggle('active');
-});
-
-// Close mobile menu when clicking a link
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
+if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
     });
-});
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+}
 
 // Navbar scroll effect
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
     if (window.scrollY > 50) {
         navbar.style.background = 'rgba(255, 255, 255, 0.98)';
         navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
