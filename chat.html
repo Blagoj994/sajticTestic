@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Agent - SmartControl</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <span>Smart</span>Control
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Početna</a>
+                <a href="index.html#services">Usluge</a>
+                <a href="index.html#about">O nama</a>
+                <a href="index.html#products">Proizvodi</a>
+                <a href="configurator.html">Konfigurator</a>
+                <a href="index.html#contact">Kontakt</a>
+                <a href="stats.html">Statistika</a>
+                <a href="chat.html" class="active">AI Chat</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+    <main class="chat-page">
+        <section class="chat-header">
+            <h1>AI Chat Agent</h1>
+            <p>Pitajte sve o pametnim kućama, kontroli pristupa i automatizaciji</p>
+        </section>
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="avatar"><i class="fas fa-robot"></i></div>
+                    <div class="text">Zdravo! Ja sam AI agent za pametne kuće i automatizaciju. Kako mogu da pomognem?</div>
+                </div>
+            </div>
+            <form class="chat-input" id="chatForm">
+                <input type="text" id="userInput" placeholder="Unesite pitanje..." autocomplete="off" required />
+                <button type="submit"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>SmartControl</h4>
+                <p>Vaš partner za pametna rešenja</p>
+            </div>
+            <div class="footer-section">
+                <h4>Pratite nas</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartControl. Sva prava zadržana.</p>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+    <script src="js/chat.js"></script>
+</body>
+</html>

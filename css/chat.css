@@ -1,0 +1,127 @@
+/* Chat Page Styles */
+.chat-page {
+    padding-top: 80px;
+    min-height: 100vh;
+    background: var(--light-bg);
+}
+
+.chat-header {
+    text-align: center;
+    padding: 2.5rem 1rem 1.5rem 1rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.chat-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.chat-header p {
+    font-size: 1.1rem;
+}
+
+.chat-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    padding: 1.5rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 350px;
+}
+
+.message {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.7rem;
+}
+
+.message.bot .avatar {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.message.user .avatar {
+    background: var(--secondary-color);
+    color: #fff;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.text {
+    background: #f5f6fa;
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    max-width: 320px;
+    word-break: break-word;
+}
+
+.message.user {
+    flex-direction: row-reverse;
+}
+
+.message.user .text {
+    background: var(--secondary-color);
+    color: #fff;
+}
+
+.chat-input {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+.chat-input button {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0 1.2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.chat-input button:hover {
+    background: var(--secondary-color);
+}
+
+@media (max-width: 600px) {
+    .chat-container {
+        max-width: 100%;
+        padding: 1rem 0.2rem 0.5rem 0.2rem;
+    }
+    .text {
+        max-width: 90vw;
+    }
+}
