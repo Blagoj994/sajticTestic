@@ -43,6 +43,15 @@ const botAnswers = [
 
 function getBotAnswer(question) {
     const q = question.toLowerCase();
+    // Prvo proveri artikle iz konfiguratora
+    if (window.configuratorArticles) {
+        const found = window.configuratorArticles.filter(a => a.keywords.some(k => q.includes(k)));
+        if (found.length > 0) {
+            let artikliTxt = found.map(a => `• <strong>${a.name}</strong> – ${a.description} (<span style='color:#00BFA5;'>€${a.price.toFixed(2)}</span>) <a href='${a.link}' target='_blank' style='color:#4A90E2;text-decoration:underline;'>Konfiguriši</a>`).join('<br>');
+            return `Preporučujem sledeće artikle iz naše ponude:<br>${artikliTxt}<br><br>Za više opcija pogledajte <a href='configurator.html' target='_blank' style='color:#4A90E2;text-decoration:underline;'>konfigurator</a>.`;
+        }
+    }
+    // Ako nema artikla, koristi standardne odgovore
     for (const entry of botAnswers) {
         if (entry.keywords.some(k => q.includes(k))) {
             return entry.answer;

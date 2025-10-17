@@ -1,4 +1,49 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Artikli iz konfiguratora za AI chat agenta
+    window.configuratorArticles = [
+        {
+            name: 'Pametno Osvetljenje',
+            keywords: ['osvetljenje', 'sijalica', 'svetlo', 'hue', 'rasveta', 'smart light'],
+            description: 'Philips Hue komplet sa 3 sijalice',
+            price: 129.99,
+            link: 'configurator.html'
+        },
+        {
+            name: 'Pametni Termostat',
+            keywords: ['termostat', 'grejanje', 'hladjenje', 'temperatura', 'nest'],
+            description: 'Nest Learning Thermostat',
+            price: 249.99,
+            link: 'configurator.html'
+        },
+        {
+            name: 'Sigurnosna Kamera',
+            keywords: ['kamera', 'video', 'nadzor', 'sigurnost', 'bezbednost', 'camera'],
+            description: '1080p HD Wi-Fi kamera sa noćnim vidom',
+            price: 179.99,
+            link: 'configurator.html'
+        },
+        {
+            name: 'Biometrijska Brava',
+            keywords: ['brava', 'biometrija', 'otisak', 'prsta', 'pin', 'kartica', 'lock'],
+            description: 'Otisak prsta + PIN + Kartica',
+            price: 299.99,
+            link: 'configurator.html'
+        },
+        {
+            name: 'RFID Čitač',
+            keywords: ['rfid', 'čitač', 'kartica', 'reader'],
+            description: 'Profesionalni čitač kartica',
+            price: 149.99,
+            link: 'configurator.html'
+        },
+        {
+            name: 'Kontroler Pristupa',
+            keywords: ['kontroler', 'pristupa', 'vrata', 'controller'],
+            description: 'Centralni kontroler za 4 vrata',
+            price: 399.99,
+            link: 'configurator.html'
+        }
+    ];
     // Initialize variables
     const systemButtons = document.querySelectorAll('.system-btn');
     const componentItems = document.querySelectorAll('.component-item');
