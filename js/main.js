@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', initAOS);
 // Create animated circuit dots
 function createCircuitDots() {
     const hero = document.querySelector('.hero');
+    if (!hero) return; // guard: hero might not exist on some pages
     const dotsContainer = document.createElement('div');
     dotsContainer.className = 'circuit-dots';
     
@@ -81,9 +82,21 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Initialize EmailJS
-(function() {
-    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+// Initialize EmailJS only if contact form exists; attempt dynamic load if emailjs missing
+(function initEmailJsIfNeeded(){
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) return;
+    // If emailjs already available, init
+    if (window.emailjs && typeof window.emailjs.init === 'function'){
+        try{ emailjs.init("YOUR_PUBLIC_KEY"); }catch(e){console.warn('EmailJS init failed',e);}    
+        return;
+    }
+    // Otherwise dynamically load EmailJS script and init when ready
+    const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js'; s.onload = ()=>{
+        try{ if(window.emailjs && typeof window.emailjs.init==='function'){ emailjs.init("YOUR_PUBLIC_KEY"); } }catch(e){ console.warn('EmailJS dynamic init failed', e); }
+    };
+    s.onerror = ()=> console.warn('Failed to load EmailJS script');
+    document.head.appendChild(s);
 })();
 
 // Form submission handler
@@ -109,6 +122,9 @@ async function handleSubmit(event) {
             message: document.getElementById('message').value
         };
 
+        if (!window.emailjs || typeof window.emailjs.send !== 'function'){
+            throw new Error('EmailJS not available');
+        }
         await emailjs.send(
             'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
             'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
@@ -124,7 +140,11 @@ async function handleSubmit(event) {
         // Error state
         console.error('Error:', error);
         form.classList.add('error');
-        formMessage.textContent = 'Došlo je do greške. Molimo pokušajte ponovo.';
+        if(error && error.message && error.message.indexOf('EmailJS')>=0){
+            formMessage.textContent = 'Email servis nije dostupan trenutno. Možete ostaviti poruku, ili pokušajte kasnije.';
+        } else {
+            formMessage.textContent = 'Došlo je do greške. Molimo pokušajte ponovo.';
+        }
         formMessage.className = 'form-message error';
     } finally {
         // Remove loading state
