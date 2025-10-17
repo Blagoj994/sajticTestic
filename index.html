@@ -101,29 +101,34 @@
     <section id="contact" class="contact">
         <h2 data-aos="fade-up">Kontaktirajte Nas</h2>
         <div class="contact-container">
-            <form class="contact-form" data-aos="fade-right" id="contactForm" onsubmit="return handleSubmit(event)">
-                <input type="text" name="name" id="name" placeholder="Vaše ime" required>
-                <input type="email" name="email" id="email" placeholder="Vaš email" required>
-                <input type="tel" name="phone" id="phone" placeholder="Vaš telefon" required>
-                <textarea name="message" id="message" placeholder="Vaša poruka" required></textarea>
-                <button type="submit" class="submit-button">
-                    <span class="button-text">Pošaljite</span>
-                    <span class="button-loader"></span>
-                </button>
-            </form>
-            <div class="contact-info" data-aos="fade-left">
-                <div class="info-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <p>Glavna ulica 123, Beograd</p>
+            <div class="contact-left">
+                <form class="contact-form" data-aos="fade-right" id="contactForm" onsubmit="return handleSubmit(event)">
+                    <input type="text" name="name" id="name" placeholder="Vaše ime" required>
+                    <input type="email" name="email" id="email" placeholder="Vaš email" required>
+                    <input type="tel" name="phone" id="phone" placeholder="Vaš telefon" required>
+                    <textarea name="message" id="message" placeholder="Vaša poruka" required></textarea>
+                    <button type="submit" class="submit-button">
+                        <span class="button-text">Pošaljite</span>
+                        <span class="button-loader"></span>
+                    </button>
+                </form>
+                <div class="contact-info" data-aos="fade-left">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Glavna ulica 123, Beograd</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+381 11 123 4567</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>info@smartcontrol.rs</p>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <i class="fas fa-phone"></i>
-                    <p>+381 11 123 4567</p>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-envelope"></i>
-                    <p>info@smartcontrol.rs</p>
-                </div>
+            </div>
+            <div class="contact-map" data-aos="fade-left">
+                <iframe src="https://www.google.com/maps?q=Glavna%20ulica%20123,%20Beograd&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="350" style="border:0; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </section>
