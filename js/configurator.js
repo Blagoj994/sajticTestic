@@ -211,4 +211,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // apply preselect on load
     applyPreselectFromUrl();
+
+    // If arrived from chat modal via localStorage, apply and then clear
+    const chatPre = localStorage.getItem('chatPreselect');
+    if(chatPre){
+        try{
+            const pairs = chatPre.split(',').map(p=>{ const [s,q]=p.split(':'); return {slug:s, qty:parseInt(q)||1}; });
+            pairs.forEach(p=>{
+                const el = document.querySelector(`.component-item[data-slug="${p.slug}"]`);
+                if(el){ const input = el.querySelector('input'); input.value = Math.min(parseInt(input.max)||999, p.qty); input.dispatchEvent(new Event('change'));
+                    el.classList.add('highlight-suggest'); el.scrollIntoView({behavior:'smooth', block:'center'}); setTimeout(()=>el.classList.remove('highlight-suggest'), 5000);
+                }
+            });
+        }catch(e){ console.warn('chatPreselect apply failed', e); }
+        localStorage.removeItem('chatPreselect');
+    }
 });

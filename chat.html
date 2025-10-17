@@ -70,7 +70,22 @@
     </footer>
     <script src="js/main.js"></script>
     <script src="js/products.js"></script>
-    <script src="js/main.js" defer></script>
     <script src="js/chat.js"></script>
+
+    <!-- Modal container for in-chat configurator preview -->
+    <div id="chatConfigModal" class="chat-config-modal" aria-hidden="true">
+        <div class="chat-config-modal-backdrop"></div>
+        <div class="chat-config-modal-panel" role="dialog" aria-modal="true" aria-labelledby="chatConfigTitle">
+            <header>
+                <h3 id="chatConfigTitle">Predlog Konfiguracije</h3>
+                <button id="chatConfigClose" aria-label="Zatvori">✕</button>
+            </header>
+            <div class="chat-config-modal-body" id="chatConfigBody"></div>
+            <footer>
+                <button id="chatConfigApply" class="btn primary">Primeni u konfigurator</button>
+                <a id="chatConfigOpenFull" class="btn" href="#">Otvori kompletan konfigurator</a>
+            </footer>
+        </div>
+    </div>
 </body>
 </html>

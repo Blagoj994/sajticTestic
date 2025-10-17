@@ -33,6 +33,21 @@
     min-height: 400px;
 }
 
+/* Modal configurator preview */
+.chat-config-modal { display: none; position: fixed; inset: 0; z-index: 2000; }
+.chat-config-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+.chat-config-modal-panel { position: relative; max-width: 720px; margin: 6vh auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+.chat-config-modal-panel header { display: flex; align-items: center; justify-content: space-between; padding: 1rem; border-bottom: 1px solid #eee; }
+.chat-config-modal-panel .chat-config-modal-body { max-height: 60vh; overflow: auto; padding: 1rem; }
+.chat-config-modal-panel footer { display: flex; gap: 0.5rem; padding: 1rem; border-top: 1px solid #eee; justify-content: flex-end; }
+.chat-config-modal .btn { padding: 0.5rem 0.9rem; border-radius: 6px; background: #eee; border: none; text-decoration: none; color: #111; }
+.chat-config-modal .btn.primary { background: #00BFA5; color: #fff; }
+.modal-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px dashed #f0f0f0; }
+.modal-totals { padding: 0.8rem 0; font-size: 1.05rem; }
+
+/* Highlighted suggested item in configurator */
+.highlight-suggest { box-shadow: 0 0 0 4px rgba(74,144,226,0.12); border-radius: 8px; transition: box-shadow 0.25s ease; }
+
 .chat-messages {
     flex: 1;
     overflow-y: auto;
