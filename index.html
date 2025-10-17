@@ -81,22 +81,8 @@
 
     <section id="products" class="products">
         <h2 data-aos="fade-up">Naši Proizvodi</h2>
-        <div class="product-grid">
-            <div class="product-card" data-aos="fade-up" data-aos-delay="100">
-                <img src="images/product1.jpg" alt="Smart Lock">
-                <h3>Pametne Brave</h3>
-                <p>Sigurnosni sistemi sa biometrijskom kontrolom</p>
-            </div>
-            <div class="product-card" data-aos="fade-up" data-aos-delay="200">
-                <img src="images/product2.jpg" alt="Smart Camera">
-                <h3>Pametne Kamere</h3>
-                <p>HD kamere sa noćnim vidom i detekcijom pokreta</p>
-            </div>
-            <div class="product-card" data-aos="fade-up" data-aos-delay="300">
-                <img src="images/product3.jpg" alt="Home Automation">
-                <h3>Kontrolni Sistemi</h3>
-                <p>Centralizovani sistemi za upravljanje domom</p>
-            </div>
+        <div class="product-grid" id="productGrid" aria-live="polite">
+            <!-- Products will be rendered here from js/products.js -->
         </div>
     </section>
 
@@ -158,6 +144,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="js/products.js"></script>
+    <script src="js/renderProducts.js" defer></script>
     <script src="js/main.js" defer></script>
 
 <!-- Mini YouTube Player at the bottom of the page -->
