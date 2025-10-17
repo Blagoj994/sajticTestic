@@ -48,31 +48,58 @@ const botAnswers = [
 
 function getBotAnswer(question) {
     const q = question.toLowerCase();
+    // Helpers: simple diacritic removal and stemming (first 4 letters) to handle plurals/inflections
+    function normalize(s){
+        if(!s) return '';
+        s = s.toLowerCase();
+        s = s.replace(/[čć]/g,'c').replace(/ž/g,'z').replace(/š/g,'s').replace(/đ/g,'dj');
+        s = s.replace(/[^a-z0-9\s]/g,'');
+        return s;
+    }
+    function stem(s){
+        const n = normalize(s).replace(/\s+/g,'');
+        return n.slice(0,4);
+    }
+    const qTokens = normalize(q).split(/\s+/).filter(Boolean);
     // Multi-quantity parsing: find pairs like "3 kamere", "tri kamere", or "2 brave i 1 kamera"
     const qtyMap = {"nula":0,"jedan":1,"jedna":1,"dva":2,"dvije":2,"tri":3,"cetiri":4,"četri":4,"četiri":4,"pet":5,"šest":6,"sedam":7,"osam":8,"devet":9,"deset":10};
     // Build a map slug->qty for matched keywords
     const qtyResults = {}; // {slug: qty}
     // match digit-word pairs
-    const digitPairs = q.matchAll(/(\d+)\s+([a-zčćžš]+\b)/gi);
+    const digitPairs = q.matchAll(/(\d+)\s+([a-zčćžšđ]+\b)/gi);
     for (const m of digitPairs){
-        const num = parseInt(m[1]); const word = m[2];
-        // try to match word to product keywords
+        const num = parseInt(m[1]); const word = m[2] || '';
+        const wstem = stem(word);
+        // try to match word to product keywords using stems
         if(window.configuratorArticles){
-            for(const a of window.configuratorArticles){ if(a.keywords.some(k=> word.includes(k) || k.includes(word))){ qtyResults[a.slug] = Math.max(qtyResults[a.slug]||0, num); } }
+            for(const a of window.configuratorArticles){ 
+                if(a.keywords.some(k=> stem(k) === wstem || stem(k).startsWith(wstem) || wstem.startsWith(stem(k)))){
+                    qtyResults[a.slug] = Math.max(qtyResults[a.slug]||0, num);
+                }
+            }
         }
     }
-    // match word-number words (tri, dva...) near product words
+    // match word-number words (tri, dva...) and map to any detected product tokens
     for(const [w,n] of Object.entries(qtyMap)){
-        if(q.includes(w)){
-            // find nearest product keyword occurrence
+        if(qTokens.includes(w)){
             if(window.configuratorArticles){
-                for(const a of window.configuratorArticles){ if(a.keywords.some(k=> q.includes(k))){ qtyResults[a.slug] = Math.max(qtyResults[a.slug]||0, n); } }
+                for(const a of window.configuratorArticles){
+                    // if any token matches this article's keyword stems, set qty
+                    const keywordStems = a.keywords.map(ks=>stem(ks));
+                    if(qTokens.some(t=> keywordStems.includes(stem(t)) || keywordStems.some(ks=> ks.startsWith(stem(t)) || stem(t).startsWith(ks)))){
+                        qtyResults[a.slug] = Math.max(qtyResults[a.slug]||0, n);
+                    }
+                }
             }
         }
     }
     // Prvo proveri artikle iz konfiguratora
     if (window.configuratorArticles) {
-        const found = window.configuratorArticles.filter(a => a.keywords.some(k => q.includes(k)));
+        // find articles by matching keyword stems against tokens to handle plurals/inflections
+        const found = window.configuratorArticles.filter(a => {
+            const keywordStems = a.keywords.map(ks=>stem(ks));
+            return qTokens.some(t => keywordStems.includes(stem(t)) || keywordStems.some(ks=> ks.startsWith(stem(t)) || stem(t).startsWith(ks)));
+        });
         if (found.length > 0) {
             // build pairs using any explicitly detected quantities per-slug, default 1
             const pairs = found.map(a => `${a.slug}:${(qtyResults[a.slug] && qtyResults[a.slug]>0) ? qtyResults[a.slug] : 1}`);
