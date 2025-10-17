@@ -69,4 +69,23 @@ const interestConfig = {
 window.addEventListener('DOMContentLoaded', () => {
     new Chart(document.getElementById('visitsChart'), visitsConfig);
     new Chart(document.getElementById('interestChart'), interestConfig);
+    // Recommendation analytics from localStorage
+    try{
+        const raw = localStorage.getItem('recommendationClicks');
+        const data = raw ? JSON.parse(raw) : null;
+        if(data && data.items){
+            const labels = Object.keys(data.items);
+            const counts = labels.map(l=>data.items[l]||0);
+            const recommendConfig = {
+                type: 'bar',
+                data: { labels: labels, datasets: [{ label: 'Klikovi', data: counts, backgroundColor: 'rgba(0,191,165,0.8)' }] },
+                options: { responsive: true, plugins:{legend:{display:false}} }
+            };
+            new Chart(document.getElementById('recommendChart'), recommendConfig);
+            const sum = counts.reduce((s,n)=>s+n,0);
+            document.getElementById('recommendSummary').textContent = `Ukupno preporuka / klikova: ${sum}. Generisano: ${data.generated||0}. Otvoreno pun konfigurator: ${data.open_full||0}.`;
+        } else {
+            document.getElementById('recommendSummary').textContent = 'Nema dostupnih podataka o preporukama.';
+        }
+    }catch(e){ console.warn('Failed to read recommendation analytics', e); }
 });

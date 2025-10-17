@@ -53,9 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalAmount = document.querySelector('.total .amount');
     const requestQuoteBtn = document.querySelector('.request-quote-btn');
 
-    // Installation fee calculation
-    const INSTALLATION_PERCENTAGE = 0.15; // 15% of subtotal
-    const MIN_INSTALLATION_FEE = 99.99;
+    // Installation fee calculation (exposed globally so chat modal can reuse)
+    window.CONFIG_INSTALLATION = window.CONFIG_INSTALLATION || { percentage: 0.15, min: 99.99 };
 
     // System type switching
     systemButtons.forEach(button => {
@@ -129,8 +128,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Calculate installation fee (15% of subtotal or minimum €99.99)
-        const installationFee = Math.max(subtotal * INSTALLATION_PERCENTAGE, MIN_INSTALLATION_FEE);
+    // Calculate installation fee (percentage of subtotal or minimum)
+    const installationFee = Math.max(subtotal * (window.CONFIG_INSTALLATION.percentage || 0.15), (window.CONFIG_INSTALLATION.min || 99.99));
         
         // Update amounts
         subtotalAmount.textContent = `€${subtotal.toFixed(2)}`;

@@ -48,30 +48,40 @@ const botAnswers = [
 
 function getBotAnswer(question) {
     const q = question.toLowerCase();
-    // parse numeric quantity expressions (e.g., "3 kamere", "tri kamere")
-    const qtyMap = {"nula":0,"jedan":1,"jedna":1,"dva":2,"dvije":2,"tri":3,"četiri":4,"pet":5,"šest":6,"sedam":7,"osam":8,"devet":9,"deset":10};
-    let detectedQty = null;
-    // digits
-    const digitMatch = q.match(/(\d+)\s*(kom|komada|komi|kamere|kamera|senzor|brava|utičnica|kamera|kamere|brave|kamera|kam|komad)?/i);
-    if (digitMatch) detectedQty = parseInt(digitMatch[1]);
-    else {
-        // words
-        for (const [word, num] of Object.entries(qtyMap)){
-            if (q.includes(word)) { detectedQty = num; break; }
+    // Multi-quantity parsing: find pairs like "3 kamere", "tri kamere", or "2 brave i 1 kamera"
+    const qtyMap = {"nula":0,"jedan":1,"jedna":1,"dva":2,"dvije":2,"tri":3,"cetiri":4,"četri":4,"četiri":4,"pet":5,"šest":6,"sedam":7,"osam":8,"devet":9,"deset":10};
+    // Build a map slug->qty for matched keywords
+    const qtyResults = {}; // {slug: qty}
+    // match digit-word pairs
+    const digitPairs = q.matchAll(/(\d+)\s+([a-zčćžš]+\b)/gi);
+    for (const m of digitPairs){
+        const num = parseInt(m[1]); const word = m[2];
+        // try to match word to product keywords
+        if(window.configuratorArticles){
+            for(const a of window.configuratorArticles){ if(a.keywords.some(k=> word.includes(k) || k.includes(word))){ qtyResults[a.slug] = Math.max(qtyResults[a.slug]||0, num); } }
+        }
+    }
+    // match word-number words (tri, dva...) near product words
+    for(const [w,n] of Object.entries(qtyMap)){
+        if(q.includes(w)){
+            // find nearest product keyword occurrence
+            if(window.configuratorArticles){
+                for(const a of window.configuratorArticles){ if(a.keywords.some(k=> q.includes(k))){ qtyResults[a.slug] = Math.max(qtyResults[a.slug]||0, n); } }
+            }
         }
     }
     // Prvo proveri artikle iz konfiguratora
     if (window.configuratorArticles) {
         const found = window.configuratorArticles.filter(a => a.keywords.some(k => q.includes(k)));
         if (found.length > 0) {
-            // attach detectedQty if present
-            const pairs = found.map(a => `${a.slug}:${detectedQty && detectedQty>0 ? detectedQty : 1}`);
+            // build pairs using any explicitly detected quantities per-slug, default 1
+            const pairs = found.map(a => `${a.slug}:${(qtyResults[a.slug] && qtyResults[a.slug]>0) ? qtyResults[a.slug] : 1}`);
             const preselectPairs = pairs.join(',');
             const configuratorUrl = `configurator.html?preselect=${encodeURIComponent(preselectPairs)}`;
 
             // build HTML list and include in-chat modal trigger
             let artikliTxt = found.map(a => {
-                const qty = (detectedQty && detectedQty>0) ? detectedQty : 1;
+                const qty = (qtyResults[a.slug] && qtyResults[a.slug]>0) ? qtyResults[a.slug] : 1;
                 return `• <strong>${a.name}</strong> – ${a.description} (<span style='color:#00BFA5;'>€${(a.price||0).toFixed(2)}</span>) <a href='#' data-slug='${a.slug}' data-qty='${qty}' class='chat-config-btn' style='color:#4A90E2;text-decoration:underline;'>Pregled</a>`;
             }).join('<br>');
 
@@ -166,25 +176,50 @@ function showChatConfiguratorModal(pairs){
         if(!art) return;
         const qty = p.qty||1;
         const row = document.createElement('div'); row.className='modal-row';
-        row.innerHTML = `<div class='m-name'>${art.name} x${qty}</div><div class='m-price'>€${(art.price*qty).toFixed(2)}</div>`;
+        row.innerHTML = `<div class='m-name'>${art.name}</div><div class='m-controls'><input type='number' min='1' value='${qty}' data-slug='${art.slug}' class='modal-qty' style='width:64px;padding:6px;border-radius:6px;border:1px solid #ddd;'/></div><div class='m-price'>€<span class='m-line-price'>${(art.price*qty).toFixed(2)}</span></div>`;
         body.appendChild(row);
         subtotal += art.price*qty;
     });
-    const totals = document.createElement('div'); totals.className='modal-totals'; totals.innerHTML = `<strong>Međuzbir:</strong> €${subtotal.toFixed(2)}`;
+    const totals = document.createElement('div'); totals.className='modal-totals'; totals.innerHTML = `<strong>Međuzbir:</strong> €<span id='modalSubtotal'>${subtotal.toFixed(2)}</span>`;
     body.appendChild(totals);
+
+    // attach qty change handlers inside modal
+    function recomputeModal(){
+        let newSub = 0;
+        body.querySelectorAll('.modal-row').forEach(r=>{
+            const slug = r.querySelector('.modal-qty').dataset.slug;
+            const qty = parseInt(r.querySelector('.modal-qty').value) || 0;
+            const art = window.configuratorArticles.find(a=>a.slug===slug);
+            if(!art) return;
+            const line = (art.price * qty);
+            r.querySelector('.m-line-price').textContent = line.toFixed(2);
+            newSub += line;
+        });
+        const inst = Math.max(newSub * (window.CONFIG_INSTALLATION.percentage||0.15), (window.CONFIG_INSTALLATION.min||99.99));
+        document.getElementById('modalSubtotal').textContent = newSub.toFixed(2);
+        // show installation and total in footer if desired
+        const footer = document.querySelector('.chat-config-modal-panel footer');
+        let instEl = footer.querySelector('.modal-install');
+        if(!instEl){ instEl = document.createElement('div'); instEl.className='modal-install'; instEl.style.marginRight='auto'; footer.insertBefore(instEl, footer.firstChild); }
+        instEl.innerHTML = `<small>Instalacija: €${inst.toFixed(2)}</small><br><small>Ukupno: €${(newSub+inst).toFixed(2)}</small>`;
+    }
+    body.querySelectorAll('.modal-qty').forEach(i=> i.addEventListener('change', recomputeModal));
+    recomputeModal();
 
     // set actions
     const applyBtn = document.getElementById('chatConfigApply');
     const openFull = document.getElementById('chatConfigOpenFull');
     applyBtn.onclick = ()=>{
-        // apply to configurator fields (if open) via localStorage prefill flag
-        const pre = pairs.map(p=>`${p.slug}:${p.qty||1}`).join(',');
+        // read adjusted quantities from modal inputs
+        const adjusted = [];
+        body.querySelectorAll('.modal-qty').forEach(i=>{
+            const s = i.dataset.slug; const q = parseInt(i.value) || 0; if(q>0) adjusted.push({slug:s, qty:q});
+        });
+        const pre = adjusted.map(p=>`${p.slug}:${p.qty}`).join(',');
         localStorage.setItem('chatPreselect', pre);
-        // highlight in configurator page if user is on configurator
         if(window.location.pathname.endsWith('configurator.html')){
-            applyPreselectFromChat(pairs);
+            window.applyPreselectFromChat(adjusted);
         } else {
-            // open configurator in same tab but anchored
             window.location.href = `configurator.html?preselect=${encodeURIComponent(pre)}`;
         }
         closeChatModal();
