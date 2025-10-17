@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistika Poseta i Interesovanja - SmartControl</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/stats.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <span>Smart</span>Control
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Početna</a>
+                <a href="index.html#services">Usluge</a>
+                <a href="index.html#about">O nama</a>
+                <a href="index.html#products">Proizvodi</a>
+                <a href="configurator.html">Konfigurator</a>
+                <a href="index.html#contact">Kontakt</a>
+                <a href="stats.html" class="active">Statistika</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="stats-page">
+        <section class="stats-header">
+            <h1>Statistika Poseta i Interesovanja</h1>
+            <p>Prikaz fiktivnih podataka o posećenosti sajta i najtraženijim uslugama</p>
+        </section>
+        <div class="stats-container">
+            <div class="stats-card">
+                <h2>Posete po danima</h2>
+                <canvas id="visitsChart" height="120"></canvas>
+            </div>
+            <div class="stats-card">
+                <h2>Najveće interesovanje</h2>
+                <canvas id="interestChart" height="120"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>SmartControl</h4>
+                <p>Vaš partner za pametna rešenja</p>
+            </div>
+            <div class="footer-section">
+                <h4>Pratite nas</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartControl. Sva prava zadržana.</p>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+    <script src="js/stats.js"></script>
+</body>
+</html>
